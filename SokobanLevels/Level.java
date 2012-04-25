@@ -29,25 +29,42 @@
  */
 package org.vikenpedia.sokoban.SokobanLevels;
 
-// This interface must be used. Read the assignment for more information.
 /**
  * The Interface Level.
  */
 public interface Level {
 
     /**
-     * Gets the lines.
+     * Gets the current level.
      * 
-     * @return the lines
+     * @return the level as a row-wise string-array
      */
 
     public String[] getLines();
 
+    /**
+     * Gets the initial level.
+     * 
+     * @return the original level as a row-wise string-array
+     */
     public String[] getOrig();
 
+    /**
+     * Reset level.
+     */
     public void reset();
 
+    /**
+     * Gets the title.
+     * 
+     * @return the title
+     */
     public String getTitle();
 
+    /**
+     * Gets the initial moves.
+     * 
+     * @return the initial moves
+     */
     public String getInitialMoves();
 }

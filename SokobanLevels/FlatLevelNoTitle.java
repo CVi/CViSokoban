@@ -39,20 +39,31 @@ import java.util.Arrays;
 public class FlatLevelNoTitle extends LoadableLevel {
 
     /**
-     * Instantiates a new flat level.
+     * Instantiates a new untitled flat-format level from a file path.
      * 
      * @param path
-     *            the path
+     *            the path to the level file
      */
     public FlatLevelNoTitle(String path) {
         process(load(path));
-
     }
 
+    /**
+     * Instantiates a new untitled flat-format level from a File resource.
+     * 
+     * @param file
+     *            the file resource of the level file
+     */
     public FlatLevelNoTitle(File file) {
         process(load(file));
     }
 
+    /**
+     * Process.
+     * 
+     * @param s
+     *            the level as a single string to be processed.
+     */
     protected void process(String s) {
         ArrayList<String> lvl = new ArrayList<String>(Arrays.asList(s
                 .split("\\n")));

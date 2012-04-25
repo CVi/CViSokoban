@@ -1,3 +1,32 @@
+/*
+ * File: sokoWin.java
+ * 
+ * @author CVi
+ * 
+ * Copyright (c) 2012, CVi
+ * All rights reserved.
+ * 
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met: 
+ * 
+ * 1. Redistributions of source code must retain the above copyright notice, this
+ *    list of conditions and the following disclaimer. 
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
+ *    and/or other materials provided with the distribution. 
+ * 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+ * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ * 
+ */
 package org.vikenpedia.sokoban.GUI;
 
 import java.awt.GridLayout;
@@ -22,13 +51,27 @@ import org.vikenpedia.sokoban.SokobanLevels.FlatLevelNoTitle;
 import org.vikenpedia.sokoban.SokobanLevels.FlatLevelWithMoves;
 import org.vikenpedia.sokoban.SokobanLevels.Level;
 
-
+/**
+ * The Class sokoWin.
+ */
 public class sokoWin implements KeyListener {
+
+    /** The frame. */
     JFrame frame;
+
+    /** The gameengine. */
     private SokobanEngine gameengine;
+
+    /** The canvas. */
     private SokobanCanvas canvas;
+
+    /** The menu bar. */
     private SokobanMenu menuBar;
+
+    /** The is paste locked. */
     private boolean isPasteLocked = false;
+
+    /** The emptymap. */
     private String[] emptymap = { " #### #   # ### ", " #    ##  # #  #",
             " ###  # # # #  #", " #    #  ## #  #", " #### #   # ### " };
 
@@ -36,6 +79,7 @@ public class sokoWin implements KeyListener {
      * Create the application.
      * 
      * @throws IOException
+     *             Signals that an I/O exception has occurred.
      */
     public sokoWin() throws IOException {
         initialize();
@@ -44,7 +88,8 @@ public class sokoWin implements KeyListener {
     /**
      * Initialize the contents of the frame.
      * 
-     * @throws IOException
+     * @param lev
+     *            the lev
      */
     private void initEngine(Level lev) {
         this.gameengine = new SokobanEngine(lev);
@@ -52,6 +97,12 @@ public class sokoWin implements KeyListener {
         canvas.drawEntireMap(lev.getLines());
     }
 
+    /**
+     * Initialize.
+     * 
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
     private void initialize() throws IOException {
         frame = new JFrame();
         frame.setBounds(100, 100, 450, 300);
@@ -119,6 +170,9 @@ public class sokoWin implements KeyListener {
     public void keyTyped(KeyEvent arg0) {
     }
 
+    /**
+     * Open.
+     */
     public void open() {
         final JFileChooser fc = new JFileChooser();
 
@@ -156,6 +210,9 @@ public class sokoWin implements KeyListener {
         }
     }
 
+    /**
+     * Save.
+     */
     public void save() {
         final JFileChooser fc = new JFileChooser();
 
@@ -174,10 +231,16 @@ public class sokoWin implements KeyListener {
         }
     }
 
+    /**
+     * Undo.
+     */
     public void undo() {
         gameengine.undo();
     }
 
+    /**
+     * Redo.
+     */
     public void redo() {
         if (this.gameengine.redos.size() > 0) {
             (new PasteThread((this.gameengine.redos.pop().toString()), this))
@@ -185,12 +248,18 @@ public class sokoWin implements KeyListener {
         }
     }
 
+    /**
+     * Copy.
+     */
     public void copy() {
         Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
         Transferable transferable = new StringSelection(gameengine.getMoves());
         clipboard.setContents(transferable, null);
     }
 
+    /**
+     * Paste.
+     */
     public void paste() {
         Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
         Transferable clipData = clipboard.getContents(clipboard);
@@ -204,6 +273,9 @@ public class sokoWin implements KeyListener {
         }
     }
 
+    /**
+     * Replay.
+     */
     public void replay() {
         canvas.removeKeyListener(this);
         String moves = gameengine.getMoves();
@@ -213,10 +285,26 @@ public class sokoWin implements KeyListener {
         (new PasteThread(moves, this)).start();
     }
 
+    /**
+     * The Class PasteThread. used for making a separate thread for auto-play
+     * (most commonly pasting or replaying)
+     */
     private class PasteThread extends Thread {
+
+        /** The s. */
         private String s;
+
+        /** The window. */
         private sokoWin window;
 
+        /**
+         * Instantiates a new paste thread.
+         * 
+         * @param s
+         *            the string to process
+         * @param win
+         *            the win
+         */
         public PasteThread(String s, sokoWin win) {
             super();
             this.s = s;

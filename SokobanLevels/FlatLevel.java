@@ -35,25 +35,37 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * The Class FlatLevel.
+ * The Class FlatLevel. Simple level with no special encoding.
  */
 public class FlatLevel extends LoadableLevel {
 
     /**
-     * Instantiates a new flat level.
+     * Instantiates a new flat-format level from a file path.
      * 
      * @param path
-     *            the path
+     *            the path to the level file
      */
     public FlatLevel(String path) {
         process(load(path));
 
     }
 
+    /**
+     * Instantiates a new flat-format level from a File resource.
+     * 
+     * @param file
+     *            the file resource of the level file
+     */
     public FlatLevel(File file) {
         process(load(file));
     }
 
+    /**
+     * Process.
+     * 
+     * @param s
+     *            the level as a single string to be processed.
+     */
     protected void process(String s) {
         List<String> lvl = new ArrayList<String>(Arrays.asList(s.split("\\n")));
         title = lvl.get(0);

@@ -48,6 +48,7 @@ public abstract class LoadableLevel implements Level {
     /** The title. */
     protected String title = "";
 
+    /** The initial moves. */
     protected String initialMoves = "";
 
     public String getTitle() {
@@ -61,6 +62,7 @@ public abstract class LoadableLevel implements Level {
     /** The level. */
     protected String[] level;
 
+    /** The start map. */
     protected String[] startMap;
 
     public String[] getLines() {
@@ -71,12 +73,16 @@ public abstract class LoadableLevel implements Level {
         return startMap;
     }
 
+    public void reset() {
+        level = startMap.clone();
+    }
+
     /**
-     * Load.
+     * Load contents of a file.
      * 
      * @param path
      *            the path
-     * @return the string loaded from the file
+     * @return the contents of the file as a monolithic string
      */
     protected String load(String path) {
         URL url;
@@ -100,6 +106,13 @@ public abstract class LoadableLevel implements Level {
         return level.toString();
     }
 
+    /**
+     * Load contents of a file.
+     * 
+     * @param file
+     *            the file
+     * @return the contents of the file as a monolithic string
+     */
     protected String load(File file) {
         StringBuffer level = new StringBuffer();
         try {
@@ -117,10 +130,14 @@ public abstract class LoadableLevel implements Level {
         return level.toString();
     }
 
-    public void reset() {
-        level = startMap.clone();
-    }
-
+    /**
+     * Save string to file.
+     * 
+     * @param file
+     *            the file
+     * @param content
+     *            the content to save
+     */
     protected void store(File file, String content) {
         try {
             BufferedWriter output = new BufferedWriter(new FileWriter(file));

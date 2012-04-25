@@ -30,7 +30,7 @@
 package org.vikenpedia.sokoban;
 
 /**
- * The Class Position.
+ * The Class Position. Used to contain an integer coordinate in a plane.
  */
 public class Position {
 

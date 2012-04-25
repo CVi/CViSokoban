@@ -40,25 +40,44 @@ import java.util.List;
 public class FlatLevelWithMoves extends LoadableLevel implements SavableLevel {
 
     /**
-     * Instantiates a new flat level.
+     * Instantiates a new flat-format level with initial moves from a file path.
      * 
      * @param path
-     *            the path
+     *            the path to the level file
      */
     public FlatLevelWithMoves(String path) {
         process(load(path));
     }
 
+    /**
+     * Instantiates a new flat-format level with initial moves from a Level
+     * instance.
+     * 
+     * @param lev
+     *            the level to copy
+     */
     public FlatLevelWithMoves(Level lev) {
         this.title = new String(lev.getTitle());
         this.level = lev.getLines().clone();
         this.startMap = lev.getOrig().clone();
     }
 
+    /**
+     * Instantiates a new flat level with moves.
+     * 
+     * @param file
+     *            the file resource of the level file
+     */
     public FlatLevelWithMoves(File file) {
         process(load(file));
     }
 
+    /**
+     * Process.
+     * 
+     * @param s
+     *            the level as a single string to be processed.
+     */
     protected void process(String s) {
         List<String> lvl = new ArrayList<String>(Arrays.asList(s.split("\\n")));
         title = lvl.get(0);

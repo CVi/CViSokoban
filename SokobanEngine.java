@@ -35,12 +35,11 @@ import java.util.List;
 import java.util.Queue;
 import java.util.Stack;
 
-import org.vikenpedia.sokoban.GUI.SquareMap;
 import org.vikenpedia.sokoban.SokobanLevels.Level;
 
-
 /**
- * The Class SokobanEngine.
+ * The Class SokobanEngine. A game-rule engine for sokoban games. Written to be
+ * somewhat versatile
  */
 public class SokobanEngine {
 
@@ -62,18 +61,14 @@ public class SokobanEngine {
     /** The level. */
     public Level level;
 
-    /** Redo Moves **/
+    /** Redo Moves *. */
     public Stack<Character> redos;
 
+    /** The listeners. */
     private List<LevelChangeListener> listeners;
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see sokoban1.SokobanPlayable#move(char)
-     */
     /**
-     * Move.
+     * Move without clearing the redo cache.
      * 
      * @param dir
      *            the direction to move
@@ -88,6 +83,13 @@ public class SokobanEngine {
         return remaining;
     }
 
+    /**
+     * Move, and clean out the redo list.
+     * 
+     * @param dir
+     *            the direction to move
+     * @return the number of remaining targets
+     */
     public int move(char dir) {
         if (iMove(dir)) {
             redos.clear();
@@ -95,27 +97,6 @@ public class SokobanEngine {
         }
         popDirty();
         return remaining;
-    }
-
-    public synchronized boolean iMove(char dir) {
-        boolean move;
-        switch (dir) {
-        case 'U':
-            move = moveUp();
-            break;
-        case 'D':
-            move = moveDown();
-            break;
-        case 'R':
-            move = moveRight();
-            break;
-        case 'L':
-            move = moveLeft();
-            break;
-        default:
-            move = false;
-        }
-        return move;
     }
 
     /**
@@ -189,6 +170,34 @@ public class SokobanEngine {
         listeners = new ArrayList<LevelChangeListener>();
         findPlayer();
         calcRemain();
+    }
+
+    /**
+     * Internal move method.
+     * 
+     * @param dir
+     *            the direction to move
+     * @return true, if successful
+     */
+    private synchronized boolean iMove(char dir) {
+        boolean move;
+        switch (dir) {
+        case 'U':
+            move = moveUp();
+            break;
+        case 'D':
+            move = moveDown();
+            break;
+        case 'R':
+            move = moveRight();
+            break;
+        case 'L':
+            move = moveLeft();
+            break;
+        default:
+            move = false;
+        }
+        return move;
     }
 
     /**
@@ -585,17 +594,6 @@ public class SokobanEngine {
     }
 
     /**
-     * Gets the char.
-     * 
-     * @param pos
-     *            the position to get
-     * @return the char at position
-     */
-    public synchronized char getChar(Position pos) {
-        return board[pos.y].charAt(pos.x);
-    }
-
-    /**
      * Pop dirty.
      * 
      * @return the position
@@ -622,12 +620,35 @@ public class SokobanEngine {
         return buff.toString();
     }
 
+    /**
+     * Gets the char for the provided position.
+     * 
+     * @param pos
+     *            the position to get
+     * @return the char at position
+     */
+    public synchronized char getChar(Position pos) {
+        return board[pos.y].charAt(pos.x);
+    }
+
+    /**
+     * Adds the listener.
+     * 
+     * @param listen
+     *            the listener
+     */
     public void addListener(LevelChangeListener listen) {
         if (!listeners.contains(listen)) {
             listeners.add(listen);
         }
     }
 
+    /**
+     * Removes the listener.
+     * 
+     * @param listen
+     *            the listen
+     */
     public void removeListener(LevelChangeListener listen) {
         listeners.remove(listen);
     }
